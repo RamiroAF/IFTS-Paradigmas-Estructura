@@ -18,4 +18,4 @@ En caso de que desee buscar por alguna línea específica, deberá filtrar la in
 ¿Qué clases se diseñaron?¿Por qué?
 
 Para esta aplicación, las clases creadas son todas formularios, cuales son utilizados cada vez que la aplicación necesite información del usuario. En los formularios se utilizó un validator que es el "DataRequired", para que sea obligatorio rellenar los campos.
-Cada consulta tiene su formulario específico, ya que se hardcodeo en cada uno el mensaje que se moestrará acompañando el campo para que ingrese los datos.
+Cada consulta tiene su formulario específico, ya que se hardcodeo en cada uno el mensaje que se mostrará acompañando el campo para que ingrese los datos.
