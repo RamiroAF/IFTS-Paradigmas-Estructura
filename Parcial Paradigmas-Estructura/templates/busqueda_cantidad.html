@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Busqueda{% endblock %}
+
+{% block page_content %}
+<form method="POST" action="/busqueda/cantidad">
+    {{ form.csrf_token }}
+    {{ form.criterio.label }} {{ form.criterio(size=20) }}
+    <input type="submit" value="Mandale">
+</form>
+{% endblock %}
