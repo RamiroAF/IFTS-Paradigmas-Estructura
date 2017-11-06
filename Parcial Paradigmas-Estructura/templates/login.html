@@ -6,6 +6,15 @@
 {% if username %}
 <h1> Ya estas logueado como {{username}}, <a href="/desloguearse">desloguearse</a> </h1>
 {% else %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <form method="POST" action="/login">
     {{ form.csrf_token }}
     {{ form.name.label }} {{ form.name(size=20) }}

@@ -3,7 +3,7 @@ import csv
 import sys
 import pandas
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired
@@ -71,8 +71,8 @@ except FileNotFoundError:
 def index():
 #Lee la sesion para ver si el usuario esta logueado, en caso de que no le este le mostrara un mensaje pidiendo loguearse.
     if 'username' in session:
-        return render_template('index.html', fecha_actual=datetime.utcnow())
-    return render_template('deslogueado.html')
+        return render_template('index.html', fecha_actual=datetime.utcnow(), username=session.get('username'))
+    return redirect('/login')
 
 @app.route('/desloguearse', methods=['GET', 'POST'])
 #Se hace un "pop" al diccionario que contiene el usuario, asi cerrando la sesion
@@ -108,10 +108,10 @@ def contactos():
             with open('ventas', 'r') as archivo:
                 lista_ventas = csv.reader(archivo)
                 primera_linea = next(lista_ventas)
-                return render_template('ventas.html', cabeza=primera_linea, cuerpo=lista_ventas)
+                return render_template('ventas.html', cabeza=primera_linea, cuerpo=lista_ventas, username=session.get('username'))
         except FileNotFoundError:
             return 'No se encuentra el archivo CSV'
-    return render_template('deslogueado.html')
+    return redirect('/login')
 
 #Busquedas en la tabla (para hacer las busquedas, utilizé el dataFrame de Pandas, que primero lee el archivo y lo guarda en una variable, luego, como argumento le hardcodeo el header de la columna en la cual quiero hacer la busqueda, y paso como dato lo que el usuario haya ingresado para buscar, si lo que se buscó se encuentra en el dataframe, guardara en la variable df2 el resultado. Luego, utilizando el metodo "to_csv" del dataframe, guardo en un archivo el resultado, con formato csv, y hago exactamente lo mismo que en la url anterior, abro el archivo, guardo los headers en una variable, los resultados en otra, y los envio a la plantilla html.
 
@@ -129,14 +129,17 @@ def busqueda_cliente():
         except FileNotFoundError:
             return 'No se encuentra el archivo CSV de Ventas'    
         if form_nombre.validate_on_submit():
+            if len(form_nombre.criterio.data) <= 3:
+                flash('Debe ingresar un criterio de busqueda con más de tres caracteres')
+                return redirect('/busqueda/cliente')
             df2 = df[(df['CLIENTE']==form_nombre.criterio.data)]
             df2 = df2.to_csv('busqueda', index=None)
             with open('busqueda') as archivo:
                 lista_resultado = csv.reader(archivo)
                 cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_nombre, cabeza=cabeza, cuerpo=lista_resultado)
-        return render_template('busqueda_cliente.html', form=form_nombre, df=df)
-    return render_template('deslogueado.html')
+                return render_template('resultado.html', form=form_nombre, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+        return render_template('busqueda_cliente.html', form=form_nombre, df=df, username=session.get('username'))
+    return redirect('/login')
 
 @app.route('/busqueda/producto', methods=['GET', 'POST'])
 def busqueda_producto():
@@ -154,9 +157,9 @@ def busqueda_producto():
             with open('busqueda') as archivo:
                 lista_resultado = csv.reader(archivo)
                 cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_apellido, cabeza=cabeza, cuerpo=lista_resultado)
-        return render_template('busqueda_producto.html', form=form_apellido, df=df)
-    return render_template('deslogueado.html')
+                return render_template('resultado.html', form=form_apellido, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+        return render_template('busqueda_producto.html', form=form_apellido, df=df, username=session.get('username'))
+    return redirect('/login')
 
 @app.route('/busqueda/cantidad', methods=['GET', 'POST'])
 def busqueda_cantidad():
@@ -174,9 +177,9 @@ def busqueda_cantidad():
             with open('busqueda') as archivo:
                 lista_resultado = csv.reader(archivo)
                 cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado)
-        return render_template('busqueda_cantidad.html', form=form_telefono, df=df)
-    return render_template('deslogueado.html')
+                return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+        return render_template('busqueda_cantidad.html', form=form_telefono, df=df, username=session.get('username'))
+    return redirect('/login')
 
 @app.route('/busqueda/precio', methods=['GET', 'POST'])
 def busqueda_precio():
@@ -194,9 +197,9 @@ def busqueda_precio():
             with open('busqueda') as archivo:
                 lista_resultado = csv.reader(archivo)
                 cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado)
-        return render_template('busqueda_precio.html', form=form_telefono, df=df)
-    return render_template('deslogueado.html')
+                return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+        return render_template('busqueda_precio.html', form=form_telefono, df=df, username=session.get('username'))
+    return redirect('/login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -214,7 +217,7 @@ def register():
             except FileNotFoundError:
                 return 'No se encuentra el archivo CSV de Usuarios'
         return "Revise la contraseña"
-    return render_template('register.html', form=form_registro)
+    return render_template('register.html', form=form_registro, username=session.get('username'))
 
 @app.errorhandler(404)
 def no_encontrado(e):
