@@ -132,7 +132,7 @@ def busqueda_cliente():
             if len(form_nombre.criterio.data) <= 3:
                 flash('Debe ingresar un criterio de busqueda con más de tres caracteres')
                 return redirect('/busqueda/cliente')
-            df2 = df[(df['CLIENTE']==form_nombre.criterio.data)]
+            df2 = df[(df['CLIENTE'].str.contains(form_nombre.criterio.data))]
             df2 = df2.to_csv('busqueda', index=None)
             with open('busqueda') as archivo:
                 lista_resultado = csv.reader(archivo)
@@ -149,16 +149,16 @@ def busqueda_producto():
                 archivo.truncate()
         except FileNotFoundError:
             return 'No se encuentra el archivo csv utilizado para las busquedas'
-        form_apellido = Consulta_Producto()
+        form_producto = Consulta_Producto()
         df = pandas.read_csv('ventas')
-        if form_apellido.validate_on_submit():
-            df2 = df[(df['PRODUCTO']==form_apellido.criterio.data)]
+        if form_producto.validate_on_submit():
+            df2 = df[(df['PRODUCTO'].str.contains(form_producto.criterio.data))]
             df2 = df2.to_csv('busqueda', index=None)
             with open('busqueda') as archivo:
                 lista_resultado = csv.reader(archivo)
                 cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_apellido, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
-        return render_template('busqueda_producto.html', form=form_apellido, df=df, username=session.get('username'))
+                return render_template('resultado.html', form=form_producto, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+        return render_template('busqueda_producto.html', form=form_producto, df=df, username=session.get('username'))
     return redirect('/login')
 
 @app.route('/busqueda/cantidad', methods=['GET', 'POST'])
