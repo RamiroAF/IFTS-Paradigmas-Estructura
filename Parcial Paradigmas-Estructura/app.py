@@ -3,7 +3,7 @@ import csv
 import sys
 import pandas
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired
@@ -101,7 +101,7 @@ def login():
 
 #abre el archivo csv con la información a mostrar en la tabla, los headers los guarda en una variable, y el resto de la lista en la otra, luego se envía las variables a la plantilla html para que de formato y muestre la tabla.
 
-@app.route('/ventas', methods=['GET', 'POST'])
+@app.route('/ventas', methods=['GET'])
 def contactos():
     if 'username' in session:
         try:
@@ -200,6 +200,12 @@ def busqueda_precio():
                 return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
         return render_template('busqueda_precio.html', form=form_telefono, df=df, username=session.get('username'))
     return redirect('/login')
+
+#Utilizando la función "send_file" de Flask, el cliente podrá bajar el archivo "busqueda", el cual siempre tendrá los resultados de la última busqueda hecha.
+
+@app.route('/exportar', methods=['GET'])
+def exportar():
+    return send_file('busqueda', as_attachment=True)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
