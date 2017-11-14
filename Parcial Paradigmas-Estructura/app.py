@@ -133,11 +133,15 @@ def busqueda_cliente():
                 flash('Debe ingresar un criterio de busqueda con más de tres caracteres')
                 return redirect('/busqueda/cliente')
             df2 = df[(df['CLIENTE'].str.contains(form_nombre.criterio.data))]
-            df2 = df2.to_csv('busqueda', index=None)
-            with open('busqueda') as archivo:
-                lista_resultado = csv.reader(archivo)
-                cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_nombre, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+            df2.to_csv('busqueda', index=None)
+            if df2.empty is True:
+                flash('No se encontraron resultados')
+                return redirect('/busqueda/cliente')
+            else:
+                with open('busqueda') as archivo:
+                    lista_resultado = csv.reader(archivo)
+                    cabeza = next(lista_resultado)
+                    return render_template('resultado.html', form=form_nombre, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
         return render_template('busqueda_cliente.html', form=form_nombre, df=df, username=session.get('username'))
     return redirect('/login')
 
@@ -153,11 +157,15 @@ def busqueda_producto():
         df = pandas.read_csv('ventas')
         if form_producto.validate_on_submit():
             df2 = df[(df['PRODUCTO'].str.contains(form_producto.criterio.data))]
-            df2 = df2.to_csv('busqueda', index=None)
-            with open('busqueda') as archivo:
-                lista_resultado = csv.reader(archivo)
-                cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_producto, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+            df2.to_csv('busqueda', index=None)
+            if df2.empty is True:
+                flash('No se encontraron resultados')
+                return redirect('/busqueda/cliente')
+            else:
+                with open('busqueda') as archivo:
+                    lista_resultado = csv.reader(archivo)
+                    cabeza = next(lista_resultado)
+                    return render_template('resultado.html', form=form_producto, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
         return render_template('busqueda_producto.html', form=form_producto, df=df, username=session.get('username'))
     return redirect('/login')
 
@@ -173,11 +181,15 @@ def busqueda_cantidad():
         df = pandas.read_csv('ventas')
         if form_telefono.validate_on_submit():
             df2 = df[(df['CANTIDAD']==int(form_telefono.criterio.data))]
-            df2 = df2.to_csv('busqueda', index=None)
-            with open('busqueda') as archivo:
-                lista_resultado = csv.reader(archivo)
-                cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+            df2.to_csv('busqueda', index=None)
+            if df2.empty is True:
+                flash('No se encontraron resultados')
+                return redirect('/busqueda/cliente')
+            else:
+                with open('busqueda') as archivo:
+                    lista_resultado = csv.reader(archivo)
+                    cabeza = next(lista_resultado)
+                    return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
         return render_template('busqueda_cantidad.html', form=form_telefono, df=df, username=session.get('username'))
     return redirect('/login')
 
@@ -193,11 +205,15 @@ def busqueda_precio():
         df = pandas.read_csv('ventas')
         if form_telefono.validate_on_submit():
             df2 = df[(df['PRECIO']==int(form_telefono.criterio.data))]
-            df2 = df2.to_csv('busqueda', index=None)
-            with open('busqueda') as archivo:
-                lista_resultado = csv.reader(archivo)
-                cabeza = next(lista_resultado)
-                return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
+            df2.to_csv('busqueda', index=None)
+            if df2.empty is True:
+                flash('No se encontraron resultados')
+                return redirect('/busqueda/cliente')
+            else:
+                with open('busqueda') as archivo:
+                    lista_resultado = csv.reader(archivo)
+                    cabeza = next(lista_resultado)
+                    return render_template('resultado.html', form=form_telefono, cabeza=cabeza, cuerpo=lista_resultado, username=session.get('username'))
         return render_template('busqueda_precio.html', form=form_telefono, df=df, username=session.get('username'))
     return redirect('/login')
 
