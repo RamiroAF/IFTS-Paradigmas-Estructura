@@ -160,7 +160,7 @@ def busqueda_producto():
             df2.to_csv('busqueda', index=None)
             if df2.empty is True:
                 flash('No se encontraron resultados')
-                return redirect('/busqueda/cliente')
+                return redirect('/busqueda/producto')
             else:
                 with open('busqueda') as archivo:
                     lista_resultado = csv.reader(archivo)
@@ -184,7 +184,7 @@ def busqueda_cantidad():
             df2.to_csv('busqueda', index=None)
             if df2.empty is True:
                 flash('No se encontraron resultados')
-                return redirect('/busqueda/cliente')
+                return redirect('/busqueda/cantidad')
             else:
                 with open('busqueda') as archivo:
                     lista_resultado = csv.reader(archivo)
@@ -208,7 +208,7 @@ def busqueda_precio():
             df2.to_csv('busqueda', index=None)
             if df2.empty is True:
                 flash('No se encontraron resultados')
-                return redirect('/busqueda/cliente')
+                return redirect('/busqueda/precio')
             else:
                 with open('busqueda') as archivo:
                     lista_resultado = csv.reader(archivo)
