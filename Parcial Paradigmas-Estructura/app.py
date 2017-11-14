@@ -205,7 +205,7 @@ def busqueda_precio():
 
 @app.route('/exportar', methods=['GET'])
 def exportar():
-    return send_file('busqueda', as_attachment=True)
+    return send_file('busqueda', as_attachment=True, attachment_filename='filtro.csv')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
