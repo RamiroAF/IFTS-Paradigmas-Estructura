@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Contactos{% endblock %}
+{% block page_content %}
+<div class="panel panel-default">
+  <div class="panel-heading">Lista de Ventas</div>
+  <table class="table">
+  <tr>
+    <th>{{cabeza[0]}}</th>
+    <th>{{cabeza[1]}}</th>
+    <th>{{cabeza[2]}}</th>
+    <th>{{cabeza[3]}}</th>
+  </tr>
+{% for linea in cuerpo %}
+  <tr>
+    <td>{{linea[0]}}</td>
+    <td>{{linea[1]}}</td>
+    <td>{{linea[2]}}</td>
+    <td> $ {{linea[3]}}</td>
+  </tr>
+{% endfor %}
+  </table>
+</div>
+{% endblock %}
