@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Busqueda{% endblock %}
+{% block page_content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<form method="POST" action="/busqueda/producto">
+    {{ form.csrf_token }}
+    {{ form.criterio.label }} {{ form.criterio(size=20) }}
+    <input type="submit" value="Mandale">
+</form>
+{% endblock %}

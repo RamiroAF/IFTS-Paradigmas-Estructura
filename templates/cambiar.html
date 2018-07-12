@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Modificar Contraseña{% endblock %}
+
+{% block page_content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<form method="POST" action="/cambiar">
+    {{ form.csrf_token }}
+    {{ form.actual.label }} {{ form.actual(size=20) }}
+    {{ form.csrf_token }}
+    {{ form.nueva.label }} {{ form.nueva(size=20) }}
+    <input type="submit" value="Mandale">
+</form>
+{% endblock %}
